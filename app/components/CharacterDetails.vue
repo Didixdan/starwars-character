@@ -24,7 +24,6 @@ export default {
     props: {
         infos: CharacterInfos
     },
-
     methods: {
         image() {
             return `~/assets/pics/${this.infos.getPicture()}`
@@ -44,7 +43,7 @@ export default {
             var lbl = "> Personnage ";
             lbl += this.infos.categ==1?"principale.":this.infos.categ==2?"secondaire.":this.infos.categ==3?"tertiaire.":"non catégorisé.";
             return lbl;
-        }
+        },
     }
 }
 </script>

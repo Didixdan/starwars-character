@@ -3,21 +3,29 @@
         <ActionBar>
           <Label text="Star Wars - Character" class="title" verticalAlignment="center" />
         </ActionBar>
-        
-        <StackLayout>
-          <FlexboxLayout class="filter" flexDirection="column" backgroundColor="#3c495e">
-            <ListPicker ref="selector" :items="filter_cat" selectedIndex="0" @selectedIndexChange="filterChanged" />
-          </FlexboxLayout>
-          
-          <StackLayout>
-            <ListView for="a_character in getCharacters" width="100%" @itemTap="onItemTap">
-              <v-template>
-                <Character :infos="a_character" />
-              </v-template>
-            </ListView>
-          </StackLayout>
 
-        </StackLayout>
+        <TabView :selectedIndex="selectedIndex" @selectedIndexChange="indexChange" tabTextColor="#d1ccc0" tabBackgroundColor="#414141" selectedTabTextColor="#ffdd59">
+          <TabViewItem title="Affichage">
+
+            <StackLayout>
+              <ListPicker ref="selector" :items="filter_cat" height="120" selectedIndex="0" @selectedIndexChange="filterChanged"/>
+          
+              <StackLayout>
+                <ListView for="a_character in getCharacters" height="100%" @itemTap="onItemTap">
+                  <v-template>
+                    <Character :infos="a_character" />
+                  </v-template>
+                </ListView>
+              </StackLayout>
+
+            </StackLayout>
+
+          </TabViewItem>
+          <TabViewItem title="Ajout">
+            <Label text="Content for Tab 2" />
+          </TabViewItem>
+        </TabView>
+        
     </Page> 
 </template>
 
@@ -27,7 +35,6 @@ import Vue from 'nativescript-vue';
 import Character from '../components/Character'
 import CharacterInfos from '../models/CharacterInfos'
 import CharacterDetails from '../components/CharacterDetails'
-import QueryResult from '../components/QueryResult'
 
 const child = new CharacterInfos("The child","Mysterious alien.","A mysterious alien pursued by bounty hunters on behalf of Imperial interests.",1,"child",9,false);
 const greef = new CharacterInfos("Greef Karga", "An expeditor.","An expeditor for the Bounty Hunters Guild, Greef Karga runs the trade on Nevarro. He's a middle-man, a connector between clients and bounty hunters.",2, "greef",5,true);
@@ -62,9 +69,11 @@ export default {
     Character,
     CharacterDetails
   },
+
   props: {
-    filter_choice: Number
+    id_c: Number
   },
+
   data() {
     return {
       characters: characters,
@@ -121,8 +130,9 @@ Page {
   background-color: #4b4b4b;
 }
 ActionBar {
-    background-color: #616161;
+    background-color: #1e272e;
     color: #dbdf00;
+    height:250px;
 }
 .title {
     font-family: 'Montserrat', "Montserrat-Regular";
