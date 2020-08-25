@@ -4,10 +4,10 @@
           <Label text="Star Wars - Character" class="title" verticalAlignment="center" />
         </ActionBar>
 
-        <TabView :selectedIndex="selectedIndex" @selectedIndexChange="indexChange" tabTextColor="#d1ccc0" tabBackgroundColor="#414141" selectedTabTextColor="#ffdd59">
-          <TabViewItem title="Affichage">
+        <!-- <TabView :selectedIndex="selectedIndex" @selectedIndexChange="indexChange" tabTextColor="#d1ccc0" selectedTabTextColor="#ffdd59"> -->
+          <!-- <TabViewItem title="Affichage"> -->
 
-            <StackLayout>
+            <StackLayout backgroundColor="#4b4b4b">
               <ListPicker ref="selector" :items="filter_cat" height="120" selectedIndex="0" @selectedIndexChange="filterChanged"/>
           
               <StackLayout>
@@ -20,11 +20,14 @@
 
             </StackLayout>
 
-          </TabViewItem>
-          <TabViewItem title="Ajout">
-            <Label text="Content for Tab 2" />
-          </TabViewItem>
-        </TabView>
+          <!-- </TabViewItem> -->
+          <!-- <TabViewItem title="Ajout"> 
+            <StackLayout backgroundColor="#4b4b4b">
+              <Label :text="imagePicked" />
+              <Button text="Button" @tap="openImagePicker" />
+            </StackLayout>
+          </TabViewItem>-->
+        <!-- </TabView> -->
         
     </Page> 
 </template>
@@ -35,6 +38,7 @@ import Vue from 'nativescript-vue';
 import Character from '../components/Character'
 import CharacterInfos from '../models/CharacterInfos'
 import CharacterDetails from '../components/CharacterDetails'
+import { ImageAsset } from 'tns-core-modules/image-asset';
 
 const child = new CharacterInfos("The child","Mysterious alien.","A mysterious alien pursued by bounty hunters on behalf of Imperial interests.",1,"child",9,false);
 const greef = new CharacterInfos("Greef Karga", "An expeditor.","An expeditor for the Bounty Hunters Guild, Greef Karga runs the trade on Nevarro. He's a middle-man, a connector between clients and bounty hunters.",2, "greef",5,true);
@@ -64,6 +68,13 @@ const characters = [
 var selector = null;
 var filterChoice = 0;
 
+var imagepicker = require("nativescript-imagepicker");
+var context = imagepicker.create({ mode: "single" }); // use "multiple" for multiple selection
+var that = this;
+
+var fs = require("file-system");
+let imageSource = require("image-source");
+
 export default {
   components: {
     Character,
@@ -83,7 +94,8 @@ export default {
         "Personnage secondaire",
         "Personnage tertiaire"
       ],
-      filter_choice: filterChoice
+      filter_choice: filterChoice,
+      imagePicked: "Aucun photo"
     }
   },
 
@@ -95,13 +107,41 @@ export default {
           duration: 1000
         },
         props: {
-          infos: e.item
+          infos: e.item,
         }
       });
     },
 
     filterChanged() {
       this.filter_choice = selector.nativeView.selectedIndex;
+    },
+
+    openImagePicker() {
+      context
+        .authorize()
+        .then(function() {
+            return context.present();
+        })
+        .then(function(selection) {
+            selection.forEach(function(selected) {
+                // process the selected image
+                // Abandonné, ne fonctionne pas -- Perdu trop de temps
+                console.log("######################### A ###########################")
+                selected.getImage().then(function(imgSource) {
+                  console.log("######################### B #############################")
+                  let folder = fs.knownFolders.documents();
+                  console.log("######################### C #############################")
+                  let path = fs.path.join(folder.path, (new Date).getTime()+".png");
+                  console.log("######################### D #############################")
+                  let saved = imgSource.saveToFile(path,"png");
+                  console.log("######################### E #############################")
+                  that.imagePicked = path;
+                  // https://www.youtube.com/watch?v=uI5cZTC12sU
+              })
+            });
+        }).catch(function (e) {
+            // process error
+        });
     }
   },
 
@@ -116,6 +156,9 @@ export default {
         }else c = characters;
       }else c = characters;
       return c;
+    },
+    getPicture() {
+      return imagePicked;
     }
   },
   
@@ -130,9 +173,13 @@ Page {
   background-color: #4b4b4b;
 }
 ActionBar {
-    background-color: #1e272e;
+    background-color: #292d30;
     color: #dbdf00;
     height:250px;
+}
+ListPicker {
+    font-size:17px;
+    color:#cddbac;
 }
 .title {
     font-family: 'Montserrat', "Montserrat-Regular";

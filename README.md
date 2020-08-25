@@ -5,6 +5,7 @@
 
 ## Tools
 NativeScript Vue
+ImagePicker (https://github.com/NativeScript/nativescript-imagepicker)
 
 ## Groupe
 VARIN Alexandre

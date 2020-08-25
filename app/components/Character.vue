@@ -41,6 +41,7 @@ image {
 
 .name {
     font-size:17px;
+    color:#cddbac;
 }
 
 .description {

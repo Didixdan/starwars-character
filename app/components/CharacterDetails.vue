@@ -50,6 +50,10 @@ export default {
 
 <style scoped>
 
+Page {
+  background-color: #4b4b4b;
+}
+
 ActionBar {
     background-color: #616161;
     color: #dbdf00;
