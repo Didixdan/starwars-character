@@ -5,7 +5,7 @@
 
 ## Tools
 NativeScript Vue
-ImagePicker (https://github.com/NativeScript/nativescript-imagepicker)
+ImagePicker (https://github.com/NativeScript/nativescript-imagepicker) --> problème lié à l'utilisation de ce plugin (non utilisé)
 
 ## Groupe
 VARIN Alexandre
